@@ -1,0 +1,52 @@
+import os
+import shutil
+from datetime import datetime, timedelta
+import psutil
+
+# Configurations
+TARGET_FOLDER = "C:/Users/sclab/Downloads"
+ARCHIVE_FOLDER = "C:/Users/sclab/Documents/Archive"
+LOG_FILE = "C:/Users/sclab/Desktop/cleanup_log.txt"
+DAYS_OLD = 30  # files older than 30 days
+
+# Ensure directories exist
+os.makedirs(ARCHIVE_FOLDER, exist_ok=True)
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+def cleanup_files(target_folder, archive_folder, days_old):
+    deleted_files = []
+    moved_files = []
+    cutoff_date = datetime.now() - timedelta(days=days_old)
+    
+    for root, dirs, files in os.walk(target_folder):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_date = datetime.fromtimestamp(os.path.getmtime(file_path))
+            
+            if file_date < cutoff_date:
+                # Move file to archive
+                dest_path = os.path.join(archive_folder, file)
+                shutil.move(file_path, dest_path)
+                moved_files.append(file)
+    
+    return deleted_files, moved_files
+
+def get_system_usage():
+    cpu = psutil.cpu_percent(interval=1)
+    ram = psutil.virtual_memory().percent
+    return cpu, ram
+
+def log_activity(deleted_files, moved_files, cpu_usage, ram_usage, log_file):
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
+    with open(log_file, 'a') as f:
+        f.write(f"----- Log Entry: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -----\n")
+        f.write(f"Deleted Files: {deleted_files if deleted_files else 'None'}\n")
+        f.write(f"Moved Files: {moved_files if moved_files else 'None'}\n")
+        f.write(f"CPU Usage: {cpu_usage}%\n")
+        f.write(f"RAM Usage: {ram_usage}%\n\n")
+
+# Run Project
+deleted_files, moved_files = cleanup_files(TARGET_FOLDER, ARCHIVE_FOLDER, DAYS_OLD)
+cpu_usage, ram_usage = get_system_usage()
+log_activity(deleted_files, moved_files, cpu_usage, ram_usage, LOG_FILE)
+print("Automation complete. Check the log file for details.")
