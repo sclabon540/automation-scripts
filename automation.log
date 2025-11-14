@@ -1,0 +1,16 @@
+2025-11-14 01:42:34,454 - INFO - Automation started
+2025-11-14 01:42:34,454 - ERROR - Automation failed
+Traceback (most recent call last):
+  File "C:\Users\sclab\import os3.py", line 17, in run_automation
+    raise FileNotFoundError(f"{input_file} not found!")
+FileNotFoundError: data.txt not found!
+2025-11-14 01:42:34,455 - ERROR - Automation Failed
+2025-11-14 01:42:34,455 - ERROR - data.txt not found!
+2025-11-14 01:48:19,192 - INFO - Automation started
+2025-11-14 01:48:19,192 - INFO - Read data.txt successfully
+2025-11-14 01:48:19,195 - INFO - backup.txt created successfully
+2025-11-14 01:48:19,196 - INFO - Automation completed: all tasks succeeded
+2025-11-14 02:13:39,143 - INFO - Automation started
+2025-11-14 02:13:39,144 - INFO - Read data.txt successfully
+2025-11-14 02:13:39,144 - INFO - backup.txt created successfully
+2025-11-14 02:13:39,145 - INFO - Automation completed: all tasks succeeded
